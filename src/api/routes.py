@@ -12,6 +12,7 @@ from flask_jwt_extended import jwt_required
 
 api = Blueprint('api', __name__)
 
+
 @api.route("/token", methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
