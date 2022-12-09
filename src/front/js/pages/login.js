@@ -7,27 +7,30 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const token = sessionStorage.getItem("token");
+  console.log("this is your token:", token);
 
   const handleClick = () => {
     const opts = {
       method: "POST",
-      Headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: email,
         password: password,
       }),
     };
     fetch(
-      "https://3000-juand30-flaskproyect-67g3ials120.ws-eu77.gitpod.io/api/token",
+      "https://3001-juand30-flaskproyect-u9thahevlsp.ws-eu78.gitpod.io/api/token",
       opts
     )
       .then((resp) => {
         if (resp.status === 200) return resp.json();
         else alert("Hay algun error");
       })
-      .then()
+      .then((data) => {
+        console.log("this come from the backend", data);
+        sessionStorage.setItem("token", data.access_token);
+      })
       .catch((error) => {
         console.error("Esto es un error de password o user", error);
       });
@@ -36,21 +39,25 @@ export const Login = () => {
   return (
     <div className="text-center mt-5">
       <h1>Login</h1>
-      <div>
-        <input
-          type="text"
-          placeholder="E-Mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleClick}>Login</button>
-      </div>
+      {token && token != "" && token != undefined ? (
+        "You are loggend in whit this token" + token
+      ) : (
+        <div>
+          <input
+            type="text"
+            placeholder="E-Mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button onClick={handleClick}>Login</button>
+        </div>
+      )}
     </div>
   );
 };
