@@ -19,10 +19,7 @@ export const Login = () => {
         password: password,
       }),
     };
-    fetch(
-      "https://3001-juand30-flaskproyect-u9thahevlsp.ws-eu78.gitpod.io/api/token",
-      opts
-    )
+    fetch(process.env.BACKEND_URL + "/api/token", opts)
       .then((resp) => {
         if (resp.status === 200) return resp.json();
         else alert("Hay algun error");
