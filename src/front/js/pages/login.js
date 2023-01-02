@@ -2,35 +2,21 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const Navigate = useNavigate();
+
   const token = sessionStorage.getItem("token");
   console.log("this is your token:", token);
 
   const handleClick = () => {
-    const opts = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    };
-    fetch(process.env.BACKEND_URL + "/api/token", opts)
-      .then((resp) => {
-        if (resp.status === 200) return resp.json();
-        else alert("Hay algun error");
-      })
-      .then((data) => {
-        console.log("this come from the backend", data);
-        sessionStorage.setItem("token", data.access_token);
-      })
-      .catch((error) => {
-        console.error("Esto es un error de password o user", error);
-      });
+    actions.login(email, password).then(() => {
+      Navigate.push("/");
+    });
   };
 
   return (
