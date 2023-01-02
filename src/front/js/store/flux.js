@@ -22,6 +22,19 @@ const getState = ({ getStore, getActions, setStore }) => {
         getActions().changeColor(0, "green");
       },
 
+      syncTokenFromSessionStore: () => {
+        const token = sessionStorage.getItem("token");
+        console.log("synching the session store token");
+        setStore({ token: null });
+      },
+
+      logout: () => {
+        sessionStorage.removeItem("token");
+        console.log("Login out");
+        if (token && token != "" && token != undefined)
+          setStore({ token: token });
+      },
+
       login: async (email, password) => {
         const opts = {
           method: "POST",
@@ -34,7 +47,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         try {
           const resp = await fetch(
-            "https://3001-juand30-flaskproyect-ps9rs92s9hq.ws-eu80.gitpod.io/api/token",
+            "https://3001-juand30-flaskproyect-u9l79yjjkwp.ws-eu80.gitpod.io/api/token",
             opts
           );
           if (resp.status !== 200) {

@@ -8,22 +8,22 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const token = sessionStorage.getItem("token");
-  console.log("this is your token:", token);
+  console.log("this is your token:", store.token);
 
   const handleClick = () => {
-    actions.login(email, password).then(() => {
-      Navigate.push("/");
-    });
+    actions.login(email, password);
   };
+
+  if (store.token && store.token != "" && store.token != undefined)
+    navigate("/");
 
   return (
     <div className="text-center mt-5">
       <h1>Login</h1>
-      {token && token != "" && token != undefined ? (
-        "You are loggend in whit this token" + token
+      {store.token && store.token != "" && store.token != undefined ? (
+        "You are loggend in whit this token" + store.token
       ) : (
         <div>
           <input
